@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function Home() {
   const [email, setEmail] = useState('');
@@ -116,7 +117,7 @@ export default function Home() {
         </form>
         <h1 className="flex mx-auto items-center justify-center mt-5 text-body-m">
           <span className=''>Don&apos;t have an account? </span>
-          <a href="/signup" className="text-custom-blue pl-1">Create account</a>
+          <Link href="/signup" className="text-custom-blue pl-1">Create account</Link>
         </h1>
       </div>
     </div>
