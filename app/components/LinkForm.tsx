@@ -76,7 +76,7 @@ const LinkForm: React.FC<LinkFormProps> = ({
         inputUrl
       );
     }
-  }, [inputUrl, shortUrl, inputDescription]);
+  }, [inputUrl, shortUrl, inputDescription, id, updateLink]);
 
   return (
     <div className="w-full bg-light-grey my-5 p-5 rounded-lg">

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -28,7 +29,7 @@ const Navbar = () => {
         </div>
         </a>
         <div className="flex ">
-          <a href="/links">
+          <Link  href="/links">
           <div
             className={`cursor-pointer flex items-center justify-center px-6 rounded-lg ${
               currentPath === "/links" ? "text-custom-blue bg-light-purple" : ""
@@ -49,8 +50,8 @@ const Navbar = () => {
               links
             </h1>
           </div>
-          </a>
-         <a href="/profile">
+          </Link>
+         <Link  href="/profile">
          <div
             className={`cursor-pointer flex items-center justify-center  px-6 rounded-lg ${
               currentPath === "/profile" ? "text-custom-blue bg-light-purple" : ""
@@ -71,9 +72,9 @@ const Navbar = () => {
               profile details
             </h1>
           </div>
-         </a>
+         </Link>
         </div>
-        <a href="/preview">
+        <Link  href="/preview">
           <button className="border border-custom-blue text-custom-blue text-heading-s px-4 rounded-lg hidden md:block ">
             Preview
           </button>
@@ -86,7 +87,7 @@ const Navbar = () => {
               width={20}
             />
           </button>
-        </a>
+        </Link>
       </div>
     </div>
   );
