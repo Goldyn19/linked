@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface Option {
-    id?: number;
-    shortenUrl: string;
-    description: string;
-    icon: string;
-    color: string;
-    url: string;
+  id?: number;
+  shortenUrl: string;
+  description: string;
+  icon: string;
+  color: string;
+  url: string;
 }
 
 interface LinkFormProps {
@@ -20,7 +20,15 @@ interface LinkFormProps {
   removeLink: (id: number) => void;
 }
 
-const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, updateLink, removeLink, user_id }) => {
+const LinkForm: React.FC<LinkFormProps> = ({
+  id,
+  description,
+  url,
+  shortenUrl,
+  updateLink,
+  removeLink,
+  user_id,
+}) => {
   const [inputUrl, setInputUrl] = useState(url);
   const [shortUrl, setShortUrl] = useState(shortenUrl);
   const [inputDescription, setInputDescription] = useState(description);
@@ -34,9 +42,11 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
       setTimeout(() => setButtonText("Copy"), 2000);
       return;
     }
-  
+
     try {
-      await navigator.clipboard.writeText(`localhost:3000/${user_id}/${shortUrl}`);
+      await navigator.clipboard.writeText(
+        `localhost:3000/${user_id}/${shortUrl}`
+      );
       setButtonText("Copied!");
       setTimeout(() => setButtonText("Copy"), 2000);
     } catch (err) {
@@ -44,7 +54,7 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
       setButtonText("Failed");
       setTimeout(() => setButtonText("Copy"), 2000);
     }
-  }
+  };
 
   useEffect(() => {
     setInputUrl(url);
@@ -54,7 +64,17 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
 
   useEffect(() => {
     if (inputUrl.trim() !== "") {
-      updateLink(id, { shortenUrl: shortUrl, icon: "/images/link.svg", color: "#1A1A1A", description:inputDescription, url: inputUrl }, inputUrl);
+      updateLink(
+        id,
+        {
+          shortenUrl: shortUrl,
+          icon: "/images/link.svg",
+          color: "#1A1A1A",
+          description: inputDescription,
+          url: inputUrl,
+        },
+        inputUrl
+      );
     }
   }, [inputUrl, shortUrl, inputDescription]);
 
@@ -62,16 +82,33 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
     <div className="w-full bg-light-grey my-5 p-5 rounded-lg">
       <div className="flex justify-between">
         <h1 className="flex items-center">
-          <Image src="/images/doubleLine.svg" alt="logo" height={6} width={12} />
-          <span className="text-heading-s text-light-black ml-2">Link #{id}</span>
+          <Image
+            src="/images/doubleLine.svg"
+            alt="logo"
+            height={6}
+            width={12}
+          />
+          {/* <span className="text-heading-s text-light-black ml-2">Link #{id}</span> */}
+          <a
+            href={`link-analysis/${id}`}
+            className="text-heading-s ml-2 text-custom-blue hover:text-custom-black"
+          >
+            Analyse{" "}
+          </a>
         </h1>
-        <h1 className="text-body-m text-light-black cursor-pointer" onClick={() => removeLink(id)}>
+        <h1
+          className="text-body-m text-light-black cursor-pointer"
+          onClick={() => removeLink(id)}
+        >
           Remove
         </h1>
       </div>
 
       {/* URL Input */}
-      <label htmlFor={`link-input-${id}`} className="block text-body-s mb-[-10px]">
+      <label
+        htmlFor={`link-input-${id}`}
+        className="block text-body-s mb-[-10px]"
+      >
         Link
       </label>
       <div className="relative w-full">
@@ -81,12 +118,16 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
         <input
           type="text"
           id={`link-input-${id}`}
-          className={`rounded-lg block w-full pl-10 border text-body-m ${urlError ? "border-red-500 placeholder-red-500" : "border-dark-grey"}`}
+          className={`rounded-lg block w-full pl-10 border text-body-m ${
+            urlError ? "border-red-500 placeholder-red-500" : "border-dark-grey"
+          }`}
           placeholder="e.g. https://www.example.com"
           value={inputUrl}
           onChange={(e) => {
             setInputUrl(e.target.value);
-            setUrlError(e.target.value.trim() === "" ? "Please enter a valid URL" : "");
+            setUrlError(
+              e.target.value.trim() === "" ? "Please enter a valid URL" : ""
+            );
           }}
           required
         />
@@ -98,10 +139,17 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
       </label>
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-          <Image src="/images/link.svg" alt="link icon" height={16} width={17} />
+          <Image
+            src="/images/link.svg"
+            alt="link icon"
+            height={16}
+            width={17}
+          />
         </div>
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
-            <span className="text-custom-blue" onClick={copyText}>{buttonText}</span>
+          <span className="text-custom-blue" onClick={copyText}>
+            {buttonText}
+          </span>
         </div>
         <input
           type="text"
@@ -120,7 +168,12 @@ const LinkForm: React.FC<LinkFormProps> = ({ id, description, url, shortenUrl, u
       </label>
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-          <Image src="/images/link.svg" alt="description icon" height={16} width={17} />
+          <Image
+            src="/images/link.svg"
+            alt="description icon"
+            height={16}
+            width={17}
+          />
         </div>
         <input
           type="text"

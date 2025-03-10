@@ -192,7 +192,7 @@ const Page: React.FC = () => {
     const filledLinks = [
       ...links,
       ...Array(Math.max(0, 5 - links.length)).fill({
-        id: -1,
+        // id: -1,
         value: "",
         icon: "",
         color: "#E5E5E5",
