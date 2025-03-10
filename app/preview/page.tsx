@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Page = () => {
   type Link = {
@@ -131,11 +132,11 @@ const Page = () => {
     <div className="relative m-0 flex flex-col justify-center items-center align-middle min-h-screen">
       <div className="absolute top-0  md:h-[357px] h-full md:bg-custom-blue w-full rounded-b-[32px]">
         <nav className="relative flex bg-white justify-between m-8 p-6  z-20 rounded-lg">
-          <a href="/links">
+          <Link href="/links">
             <button className="bg-white text-heading-s px-4 text-custom-blue rounded-[8px] border border-custom-blue">
               Back to Editor
             </button>
-          </a>
+          </Link>
           <button className="bg-custom-blue text-white text-heading-s rounded-[8px] px-4">
             Share Link
           </button>
