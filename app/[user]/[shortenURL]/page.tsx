@@ -1,16 +1,15 @@
 import { redirect } from "next/navigation";
 import LinkNotFound from "@/app/components/LinkNotFound";
 
-const url = `${process.env.NEXT_PUBLIC_API_URL}`;
+const url = process.env.NEXT_PUBLIC_API_URL;
 
-interface PageProps {
-  params: { user: string; shortenURL: string };
-}
-
-async function getOriginalUrl(shortUrl: string, user_id: string): Promise<string | null> {
+// Fetch the original URL
+async function getOriginalUrl(
+  shortUrl: string,
+  userId: string
+): Promise<string | null> {
   try {
-    const res = await fetch(`${url}/link/urls/${user_id}/${shortUrl}`);
-
+    const res = await fetch(`${url}/link/urls/${userId}/${shortUrl}`);
     if (!res.ok) return null;
 
     const data = await res.json();
@@ -21,8 +20,29 @@ async function getOriginalUrl(shortUrl: string, user_id: string): Promise<string
   }
 }
 
-export default async function ShortUrlPage({ params }: PageProps) {
-  const originalUrl = await getOriginalUrl(params.shortenURL, params.user);
+// Define the `PageProps` type explicitly
+interface PageProps {
+  params: Promise<{
+    user: string;
+    shortenURL: string;
+  }>;
+}
+
+// Ensure `Page` function properly matches expected types
+export default async function Page({ params }: { params: PageProps['params'] }) {
+  const resolvedParams = await params;
+  return <RedirectHandler user={resolvedParams.user} shortenURL={resolvedParams.shortenURL} />;
+}
+
+// Redirect handler with resolved types
+async function RedirectHandler({
+  user,
+  shortenURL,
+}: {
+  user: string;
+  shortenURL: string;
+}) {
+  const originalUrl = await getOriginalUrl(shortenURL, user);
 
   if (!originalUrl) {
     return <LinkNotFound />;
