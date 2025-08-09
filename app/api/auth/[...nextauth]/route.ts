@@ -72,6 +72,7 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      
       if (token) {
         session.user = session.user || {};   // Ensure session.user is initialized
         session.user.id = token.id as string;
@@ -81,6 +82,8 @@ const handler = NextAuth({
         session.user.profile_picture = token.profile_picture as string;
         session.accessToken = token.accessToken as string;
       }
+      
+
       return session;
     },
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 interface Option {
@@ -33,8 +33,8 @@ const LinkForm: React.FC<LinkFormProps> = ({
   const [shortUrl, setShortUrl] = useState(shortenUrl);
   const [inputDescription, setInputDescription] = useState(description);
   const [urlError, setUrlError] = useState("");
-
   const [buttonText, setButtonText] = useState("Copy");
+  const [updateTimeout, setUpdateTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const copyText = async () => {
     if (!shortUrl) {
@@ -62,21 +62,47 @@ const LinkForm: React.FC<LinkFormProps> = ({
     setShortUrl(shortenUrl);
   }, [url, description, shortenUrl]);
 
-  useEffect(() => {
-    if (inputUrl.trim() !== "") {
-      updateLink(
-        id,
-        {
-          shortenUrl: shortUrl,
-          icon: "/images/link.svg",
-          color: "#1A1A1A",
-          description: inputDescription,
-          url: inputUrl,
-        },
-        inputUrl
-      );
+  // Debounced update function
+  const debouncedUpdate = useCallback(() => {
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
     }
-  }, [inputUrl, shortUrl, inputDescription, id, updateLink]);
+
+    // Only update if the values are different from the props
+    if (
+      inputUrl.trim() !== "" &&
+      (inputUrl !== url ||
+        shortUrl !== shortenUrl ||
+        inputDescription !== description)
+    ) {
+      const timeoutId = setTimeout(() => {
+        updateLink(
+          id,
+          {
+            shortenUrl: shortUrl,
+            icon: "/images/link.svg",
+            color: "#1A1A1A",
+            description: inputDescription,
+            url: inputUrl,
+          },
+          inputUrl
+        );
+      }, 500); // 500ms debounce delay
+
+      setUpdateTimeout(timeoutId);
+    }
+  }, [inputUrl, shortUrl, inputDescription, id, updateLink, url, shortenUrl, description]);
+
+  useEffect(() => {
+    debouncedUpdate();
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (updateTimeout) {
+        clearTimeout(updateTimeout);
+      }
+    };
+  }, [debouncedUpdate]);
 
   return (
     <div className="w-full bg-light-grey my-5 p-5 rounded-lg">

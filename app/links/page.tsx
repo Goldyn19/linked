@@ -91,7 +91,7 @@ const Page: React.FC = () => {
 
     loadLinks();
   }, [session]);
-  console.log(session?.user.id);
+  console.log(session?.user);
 
   const addNewLink = () => {
     setLinks([
@@ -259,7 +259,7 @@ const Page: React.FC = () => {
               />
             )}
           </div>
-          <div className="rounded-lg min-h-[16px] max-h-[21px] min-w-[96px] max-w-[280px]  z-10 flex justify-between absolute top-60 text-heading-s ">
+          <div className="rounded-lg min-h-[16px] max-h-[21px] min-w-[96px] max-w-[280px] text-light-black  z-10 flex justify-between absolute top-60 text-heading-s ">
             {firstName} {lastName}
           </div>
           <div

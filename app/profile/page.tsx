@@ -124,28 +124,28 @@ useEffect(() => {
     }
   };
   
-  const fetchUserData = async (accessToken: string) => {
-    try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/users`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+  // const fetchUserData = async (accessToken: string) => {
+  //   try {
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/auth/users`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
     
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
     
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching and mapping links:", error);
-        return [];
-      }
-  }
+  //       const data = await response.json();
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.error("Error fetching and mapping links:", error);
+  //       return [];
+  //     }
+  // }
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -156,8 +156,8 @@ useEffect(() => {
     const loadLinks = async () => {
       if (session?.accessToken) {
         const fetchedLinks = await fetchAndMapLinks(session.accessToken);
-        const userData = await fetchUserData(session.accessToken);
-        console.log(userData);
+        // const userData = await fetchUserData(session.accessToken);
+        // console.log(userData);
         setLinks(fetchedLinks);
       }
     };
