@@ -59,7 +59,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const customUser = user as User;  // Cast user to your custom User type
         token.id = customUser.id;
@@ -68,6 +68,11 @@ const handler = NextAuth({
         token.last_name = customUser.last_name;
         token.profile_picture = customUser.profile_picture;
         token.accessToken = customUser.accessToken;
+      }
+        if (trigger === 'update' && session?.user.first_name ||  session?.user.last_name || session?.user.profile_picture) {
+        token.first_name = session.user.first_name;
+        token.last_name = session.user.last_name;
+        token.profile_picture = session.user.profile_picture;
       }
       return token;
     },

@@ -51,7 +51,7 @@ const fetchAndMapLinks = async (accessToken: string): Promise<Link[]> => {
 
 const Page: React.FC = () => {
   const [links, setLinks] = useState<Link[]>([]);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [firstName, setFirstName] = useState(session?.user.first_name||"");
   const [lastName, setLastName] = useState(session?.user.last_name||"");
   const [email, setEmail] = useState(session?.user.email || '');
@@ -70,6 +70,7 @@ useEffect(() => {
     }
   }, [session]);
 //   console.log(profilePicture)
+
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>
@@ -116,6 +117,15 @@ useEffect(() => {
       );
       if (response.ok) {
         console.log("Form submitted successfully!");
+        const updated = await update({
+          user: {
+            first_name: firstName,
+            last_name: lastName,
+            profile_picture: profilePicture || cloudImage,
+          },
+          
+        })
+        console.log("Session updated successfully!", updated);
       } else {
         console.error("Form submission error.");
       }
